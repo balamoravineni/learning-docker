@@ -1,20 +1,22 @@
-# 1st stage -- BUILD
-FROM node:22 as BUILD
+# 1st stage -- build
+FROM node:22 AS build
 #set working directory
 WORKDIR /app
-# copy package.json, package-lock.json
-COPY package*.json .
+# copy package.json, package-lock.json along with source code & tsconfig.json
+COPY . .
 # install the deps
 RUN npm ci
-# 2nd stage --RUNTIME (distroless image for less size & more security)
-FROM gcr.io/distroless/nodejs22 as RUNTIME
+# transpile source code from ts to js
+RUN npm run build
+# 2nd stage --runtime (distroless image for less size & more security)
+FROM gcr.io/distroless/nodejs22 AS runtime
 #set working directory
 WORKDIR /app
 # copy package.json, package-lock.json
-COPY --from=BUILD app/node_modules node_modules
-# copy source code
-COPY src src
+COPY --from=build app/node_modules node_modules
+# copy transpiled code (js) instead of source code (ts)
+COPY --from=build app/dist dist
 #expose application port
 ENV PORT=3000
 # buid & run
-CMD ["src/index.js"]
+CMD ["dist/index.js"]
