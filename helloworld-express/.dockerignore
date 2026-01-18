@@ -2,5 +2,6 @@ node_modules
 dist
 .gitignore
 Dockerfile
+Learning Docker - Express App.postman_collection.json
 **/*.test.*
 **/*.env*
