@@ -10,6 +10,8 @@ RUN npm ci
 COPY tsconfig.json .
 COPY src src
 RUN npm run build
+RUN rm -r node_modules
+RUN npm ci --only=production
 # 2nd stage --runtime (distroless image for less size & more security)
 FROM gcr.io/distroless/nodejs22 AS runtime
 #set working directory
