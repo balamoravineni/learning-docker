@@ -2,11 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
+const APP_NAME = process.env.APP_NAME || "Just normal express App";
 
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+    res.send(`Hello World from ${APP_NAME}`);
 });
 
 const users = [];
@@ -39,6 +41,6 @@ app.get('/users/:userId', (req, res) => {
     res.send(user);
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
