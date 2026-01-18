@@ -10,14 +10,20 @@ RUN npm ci
 COPY tsconfig.json .
 COPY src src
 RUN npm run build
-RUN rm -r node_modules
+# 2nd stage -- deps
+FROM node:22-alpine AS deps
+#set working directory
+WORKDIR /app
+# copy package.json, package-lock.json
+COPY package*.json .
+# install the deps
 RUN npm ci --only=production
-# 2nd stage --runtime (distroless image for less size & more security)
+# 3rd stage --runtime (distroless image for less size & more security)
 FROM gcr.io/distroless/nodejs22 AS runtime
 #set working directory
 WORKDIR /app
 # copy node_modules from the above stage
-COPY --from=build app/node_modules node_modules
+COPY --from=deps app/node_modules node_modules
 # copy transpiled code (js) instead of source code (ts) from the above stage
 COPY --from=build app/dist dist
 #expose application port
