@@ -1,5 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+import bodyParser from 'body-parser';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
     res.send(`Hello World from ${APP_NAME}`);
 });
 
-const users = [];
+const users: {userId: string, name: string}[] = [];
 
 //register a new user
 app.post('/users', (req, res) => {
