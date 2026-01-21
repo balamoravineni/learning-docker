@@ -8,9 +8,9 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          This is a sample Balakrishna's Blue App.
+          This is a sample Balakrishna's Red App.
         </p>
-        <p>Peace out!</p>
+        <p>Peace in!</p>
       </header>
     </div>
   );

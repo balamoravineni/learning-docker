@@ -1,0 +1,10 @@
+# Development Dockerfile for React App
+FROM node:24-alpine AS build
+WORKDIR /app
+COPY package*.json .
+RUN npm ci
+COPY . .
+CMD ["npm", "start"]
+
+# docker build -t reactappimg:dev -f Dockerfile.dev . 
+# docker run -d -p 3000:3000 --rm -v ./src:/app/src reactappimg:dev
